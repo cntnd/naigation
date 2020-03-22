@@ -1,10 +1,10 @@
 ?><?php
-// cntnd_list_input
+// cntnd_navigation_input
 
 // input/vars
-$listname = "CMS_VALUE[1]";
-if (empty($listname)){
-    $listname="cntnd_list";
+$category_id = (int) "CMS_VALUE[1]";
+if (empty($category_id)){
+    $category_id=1;
 }
 $template = "CMS_VALUE[2]";
 $data = json_decode(base64_decode("CMS_VALUE[3]"), true);
@@ -12,7 +12,7 @@ $data = json_decode(base64_decode("CMS_VALUE[3]"), true);
 // other/vars
 $uuid = rand();
 $templateOptions= array();
-$template_dir   = $cfgClient[$client]["module"]["path"].'cntnd_list/template/';
+$template_dir   = $cfgClient[$client]["module"]["path"].'cntnd_navigation/template/';
 $handle         = opendir($template_dir);
 while ($entryName = readdir($handle)){
     if (is_file($template_dir.$entryName)){
@@ -34,19 +34,21 @@ while ( $db->nextRecord() ) {
 }
 
 // includes
-cInclude('module', 'includes/class.cntnd_list_input.php');
-cInclude('module', 'includes/script.cntnd_list_input.php');
-cInclude('module', 'includes/style.cntnd_list_input.php');
+cInclude('module', 'includes/style.cntnd_navigation_input.php');
 
 if (!$template OR empty($template) OR $template=="false"){
-  echo '<div class="cntnd_alert cntnd_alert-primary">'.mi18n("CHOOSE_TEMPLATE").'</div>';
+  echo '<div class="cntnd_info cntnd_info-primary">'.mi18n("CHOOSE_TEMPLATE").'</div>';
 }
 ?>
-<div class="cntnd_alert cntnd_alert-danger cntnd_list-duplicate hide"><?= mi18n("DUPLICATE_CONFIG") ?></div>
 <div class="form-vertical">
   <div class="form-group">
-    <label for="listname_<?= $uuid ?>"><?= mi18n("LISTNAME") ?></label>
-    <input id="listname_<?= $uuid ?>" name="CMS_VAR[1]" type="text" class="cntnd_list_id" value="<?= $listname ?>" />
+    <label><?= mi18n("SELECT_CATEGORY") ?></label>
+    <?php echo buildCategorySelect("CMS_VAR[1]", $category_id); ?>
+  </div>
+
+  <div class="form-check form-check-inline">
+    <input id="subnav_<?= $uuid ?>" class="form-check-input" type="checkbox" name="CMS_VAR[3]" value="true" <?php if("CMS_VALUE[3]"=='true'){ echo 'checked'; } ?> />
+    <label for="subnav_<?= $uuid ?>"><?= mi18n("SHOW_SUBNAV") ?></label>
   </div>
 
   <div class="form-group">
@@ -61,38 +63,4 @@ if (!$template OR empty($template) OR $template=="false"){
     </select>
   </div>
 </div>
-
-<hr />
-<?php
-if (!empty($template) AND $template!="false"){
-  $handle = fopen($template, "r");
-  $templateContent = fread($handle, filesize($template));
-  fclose($handle);
-  preg_match_all('@\{\w*?\}@is', $templateContent, $fields);
-
-  echo '<table class="cntnd_list" data-uuid="'.$uuid.'">';
-  $index=0;
-  $count = count(array_unique($fields[0]));
-  foreach(array_unique($fields[0]) as $field){
-      $tpl_field = 'data['.$index.'][field]';
-      $label = 'data['.$index.'][label]';
-      $type ='data['.$index.'][type]';
-      $extra ='data['.$index.'][extra]';
-
-      echo '<tr>';
-      echo '<td><b>'.$field.'</b><input data-uuid="'.$uuid.'" type="hidden" name="'.$tpl_field.'" value="'.$field.'" /></td>';
-      echo '<td><input data-uuid="'.$uuid.'" type="text" name="'.$label.'" value="'.$data[$label].'" /></td>';
-      echo '<td><select data-uuid="'.$uuid.'" name="'.$type.'">'.CntndListInput::getChooseFields($field,$data[$type]).'</select></td>';
-      echo '<td>';
-      if (CntndListInput::isExtraField($data[$type])){
-        echo '<select data-uuid="'.$uuid.'" name="'.$extra.'">'.CntndListInput::getExtraFields($data[$type],$data[$extra],$dirs).'</select>';
-      }
-      echo '</td>';
-      echo '</tr>';
-
-      $index++;
-  }
-  echo '</table>';
-  echo '<input type="hidden" name="CMS_VAR[3]" id="content_'.$uuid.'" value="CMS_VALUE[3]" />';
-}
 ?><?php

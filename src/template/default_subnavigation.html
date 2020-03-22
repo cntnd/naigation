@@ -1,0 +1,21 @@
+{if 0 lt $ulId|strlen}<!-- cntnd_navigation/template/default_subnavigation.html -->{/if}
+  <ul class="subnavigation">
+  {foreach name=nav from=$tree item=wrapper}
+    {assign var="url" value=$wrapper.item->getLink()}
+    {if $redirect.$startidartlang.redirect eq 1}
+        {assign var="url" value=$redirect.$startidartlang.redirect_url}
+    {/if}
+
+    {assign var="name" value=$wrapper.item->get('name')}
+
+    {if $idcat|in_array:$path}
+        {assign var="active" value='active'}
+    {else}
+        {assign var="active" value=''}
+    {/if}
+    <li class="subnav-item">
+      <a class="subnav-link {$active}" href="{$url}" title="{$name}">{$name}</a>
+    </li>
+  {/foreach}
+  </ul>
+{if 0 lt $ulId|strlen}<!-- cntnd_navigation/template/default_subnavigation.html -->{/if}
