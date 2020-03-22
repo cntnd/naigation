@@ -24,11 +24,6 @@ if (empty($subnav_depth)){
   $subnav_depth = 4;
 }
 
-// includes
-if ($editmode){
-  cInclude('module', 'includes/script.cntnd_navigation_output.php');
-}
-
 // module
 if ($editmode){
 	echo '<div class="content_box"><label class="content_type_label">'.mi18n("MODULE").'</label>';
