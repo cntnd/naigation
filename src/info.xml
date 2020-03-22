@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+<name>cntnd_navigation</name>
+<description>
+cntnd_navigation
+Core Navigation
+
+Autor Thomas D'Ascoli, thomas@dasco.li
+
+Version 1.0.0
+</description>
+<type/>
+<alias>cntnd_navigation</alias>
+</module>
