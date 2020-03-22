@@ -1,4 +1,4 @@
-MODULE=Nvigation
+MODULE=Navigation
 SELECT_CHOOSE=-bitte wählen-
 SELECT_CATEGORY=Kategorie wählen
 CHOOSE_TEMPLATE=Bitte das Template auswählen ansonsten wird das Standard Tmplate gewählt.
