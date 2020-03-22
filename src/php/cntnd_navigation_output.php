@@ -25,9 +25,8 @@ if (empty($subnav_depth)){
 }
 
 // includes
-cInclude('module', 'includes/class.cntnd_list_output.php');
 if ($editmode){
-  cInclude('module', 'includes/script.cntnd_list_output.php');
+  cInclude('module', 'includes/script.cntnd_navigation_output.php');
 }
 
 // module

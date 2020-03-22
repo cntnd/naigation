@@ -7,7 +7,6 @@ if (empty($category_id)){
     $category_id=1;
 }
 $template = "CMS_VALUE[2]";
-$data = json_decode(base64_decode("CMS_VALUE[3]"), true);
 
 // other/vars
 $uuid = rand();
@@ -53,7 +52,7 @@ if (!$template OR empty($template) OR $template=="false"){
 
   <div class="form-group">
     <label for="template_<?= $uuid ?>"><?= mi18n("TEMPLATE") ?></label>
-    <select name="CMS_VAR[2]" id="template_<?= $uuid ?>" size="1" onchange="this.form.submit()">
+    <select name="CMS_VAR[2]" id="template_<?= $uuid ?>" size="1">
       <option value="false"><?= mi18n("SELECT_CHOOSE") ?></option>
       <?php
         foreach ($templateOptions as $value) {
@@ -63,4 +62,4 @@ if (!$template OR empty($template) OR $template=="false"){
     </select>
   </div>
 </div>
-?><?php
+<?php
