@@ -1,6 +1,7 @@
 {if 0 lt $ulId|strlen}<!-- cntnd_navigation/template/default_subnavigation.html -->{/if}
   <ul class="subnavigation">
   {foreach name=nav from=$tree item=wrapper}
+	  {assign var="idcat" value=$wrapper.idcat}
     {assign var="url" value=$wrapper.item->getLink()}
     {if $redirect.$startidartlang.redirect eq 1}
         {assign var="url" value=$redirect.$startidartlang.redirect_url}
