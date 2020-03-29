@@ -48,9 +48,17 @@ $db->query("SELECT * FROM %s ",$cfg['tab']['art_lang'],$client);
 $redirect = array();
 
 while ($db->nextRecord()) {
+  $target = "_blank";
+  // startsWith(redirect_url, frontend_url);
+  // (https://gist.github.com/umidjons/10094793)
+  if (strncmp($db->f('redirect_url'), cRegistry::getFrontendUrl(), strlen(cRegistry::getFrontendUrl())) === 0){
+    $target="_self";
+  }
+
 	$redirect[$db->f('idartlang')]=array(
 		"redirect" => $db->f('redirect'),
-		"redirect_url" => $db->f('redirect_url')
+		"url" => $db->f('redirect_url'),
+		"target" => $target
 	);
 }
 
