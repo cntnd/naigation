@@ -15,18 +15,19 @@ if (empty($category_id)){
 
 $template = "CMS_VALUE[2]";
 if (empty($template)){
-  $template='default.html';
+    $template='default.html';
 }
 
 $subnav = "CMS_VALUE[3]";
 $subnav_depth = (int) "CMS_VALUE[4]";
 if (empty($subnav_depth)){
-  $subnav_depth = 4;
+    $subnav_depth = 4;
 }
+$static_subnav = "CMS_VALUE[5]";
 
 // module
 if ($editmode){
-	echo '<div class="content_box"><label class="content_type_label">'.mi18n("MODULE").'</label>';
+    echo '<div class="content_box"><label class="content_type_label">'.mi18n("MODULE").'</label>';
 }
 
 // get client settings
@@ -38,40 +39,62 @@ $categoryHelper = cCategoryHelper::getInstance();
 $categoryHelper->setAuth(cRegistry::getAuth());
 $tree = $categoryHelper->getSubCategories($rootIdcat, $depth);
 
-// get path (breadcrumb) of current category
-$filter = create_function('cApiCategoryLanguage $item', 'return $item->get(\'idcat\');');
-$path = array_map($filter, $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), $category_id));
+if (!function_exists("navigation")){
+    function navigation($tree):array {
+        $nav=array();
+        $subcats=array();
+        foreach ($tree as $wrapper) {
+            if (is_array($wrapper['subcats'])){
+                $subcats = navigation($wrapper['subcats']);
+            }
+
+            $nav[$wrapper['item']->get('startidartlang')]=array(
+                "idcat"=>$wrapper['idcat'],
+                "redirect"=>false,
+                "idartlang"=>$wrapper['item']->get('startidartlang'),
+                "url"=>$wrapper['item']->getLink(),
+                "target"=>"_self",
+                "name"=>$wrapper['item']->get('name'),
+                "subcats"=>$subcats
+            );
+        }
+        return $nav;
+    }
+}
+
+$navigation = navigation($tree);
+$path = $categoryHelper->getParentCategoryIds($idcat, $depth);
+$path[]=$idcat;
 
 // redirects
 $db = new cDb;
-$db->query("SELECT * FROM %s ",$cfg['tab']['art_lang'],$client);
-$redirect = array();
-
+$db->query("SELECT * FROM %s WHERE online = 1 AND redirect = 1",$cfg['tab']['art_lang'],$client);
 while ($db->nextRecord()) {
-  $target = "_blank";
-  // startsWith(redirect_url, frontend_url);
-  // (https://gist.github.com/umidjons/10094793)
-  if (strncmp($db->f('redirect_url'), cRegistry::getFrontendUrl(), strlen(cRegistry::getFrontendUrl())) === 0){
-    $target="_self";
-  }
+    $target = "_blank";
+    // startsWith(redirect_url, frontend_url);
+    // (https://gist.github.com/umidjons/10094793)
+    if (strncmp($db->f('redirect_url'), cRegistry::getFrontendUrl(), strlen(cRegistry::getFrontendUrl())) === 0){
+        $target="_self";
+    }
 
-	$redirect[$db->f('idartlang')]=array(
-		"redirect" => $db->f('redirect'),
-		"url" => $db->f('redirect_url'),
-		"target" => $target
-	);
+    if (array_key_exists($db->f('idartlang'), $navigation)){
+        $navigation[$db->f('idartlang')]["redirect"]=$db->f('redirect');
+        $navigation[$db->f('idartlang')]["url"]=$db->f('redirect_url');
+        $navigation[$db->f('idartlang')]["target"]=$target;
+    }
 }
 
 // display navigation
 $smarty = cSmartyFrontend::getInstance();
 $smarty->assign('ulId', 'navigation');
-$smarty->assign('tree', $tree);
 $smarty->assign('path', $path);
-$smarty->assign('redirect', $redirect);
+$smarty->assign('current', $idcat);
+$smarty->assign('navigation', $navigation);
 $smarty->assign('subnav', $subnav);
+$smarty->assign('staticSubnav', $static_subnav);
 $smarty->display($template);
 
 if ($editmode){
-  echo '</div>';
+    echo '</div>';
 }
 ?>
