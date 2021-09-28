@@ -1,6 +1,11 @@
 <?php
 // cntnd_navigation_output
 
+// includes
+use Cntnd\Navigation\CntndNavigation;
+
+cInclude('module', 'includes/class.cntnd_navigation.php');
+
 // assert framework initialization
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
@@ -14,8 +19,8 @@ if (empty($category_id)){
 }
 
 $template = "CMS_VALUE[2]";
-if (empty($template)){
-    $template='default.html';
+if (!CntndNavigation::isTemplate('cntnd_navigation', $client, $template)){
+    $template="default.html";
 }
 
 $subnav = "CMS_VALUE[3]";

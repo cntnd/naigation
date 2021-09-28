@@ -2,8 +2,12 @@
 // cntnd_navigation_input
 
 // includes
+use Cntnd\Navigation\CntndNavigation;
+
 cInclude('module', 'includes/style.cntnd_navigation_input.php');
 cInclude('module', 'includes/script.cntnd_navigation_input.php');
+cInclude('module', 'includes/class.cntnd_navigation.php');
+
 
 // input/vars
 $category_id = (int) "CMS_VALUE[1]";
@@ -11,23 +15,13 @@ if (empty($category_id)){
     $category_id=1;
 }
 $template = "CMS_VALUE[2]";
+if (!CntndNavigation::isTemplate('cntnd_navigation', $client, $template)){
+    $template="default.html";
+}
 
 // other/vars
 $uuid = rand();
-$templateOptions= array();
-$template_dir   = $cfgClient[$client]["module"]["path"].'cntnd_navigation/template/';
-$handle         = opendir($template_dir);
-while ($entryName = readdir($handle)){
-    if (is_file($template_dir.$entryName)){
-        $selected="";
-        if ($template==$template_dir.$entryName){
-            $selected = 'selected="selected"';
-        }
-        $templateOptions[]='<option '.$selected.' value="'.$template_dir.$entryName.'">'.$entryName.'</option>';
-    }
-}
-closedir($handle);
-asort($templateOptions);
+$templates = CntndNavigation::templates('cntnd_navigation', $client);
 
 $db=cRegistry::getDb();
 $sql = "SELECT DISTINCT dirname from ".$cfg["tab"]["upl"];
