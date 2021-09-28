@@ -2,8 +2,6 @@
 // cntnd_navigation_input
 
 // includes
-use Cntnd\Navigation\CntndNavigation;
-
 cInclude('module', 'includes/style.cntnd_navigation_input.php');
 cInclude('module', 'includes/script.cntnd_navigation_input.php');
 cInclude('module', 'includes/class.cntnd_navigation.php');
@@ -15,13 +13,13 @@ if (empty($category_id)){
     $category_id=1;
 }
 $template = "CMS_VALUE[2]";
-if (!CntndNavigation::isTemplate('cntnd_navigation', $client, $template)){
+if (!Cntnd\Navigation\CntndNavigation::isTemplate('cntnd_navigation', $client, $template)){
     $template="default.html";
 }
 
 // other/vars
 $uuid = rand();
-$templates = CntndNavigation::templates('cntnd_navigation', $client);
+$templates = Cntnd\Navigation\CntndNavigation::templates('cntnd_navigation', $client);
 
 $db=cRegistry::getDb();
 $sql = "SELECT DISTINCT dirname from ".$cfg["tab"]["upl"];
@@ -55,7 +53,7 @@ if (!$template OR empty($template) OR $template=="false"){
         <select name="CMS_VAR[2]" id="template_<?= $uuid ?>" size="1">
             <option value="false"><?= mi18n("SELECT_CHOOSE") ?></option>
             <?php
-            foreach ($templateOptions as $value) {
+            foreach ($templates as $value) {
                 echo $value;
             }
             ?>
