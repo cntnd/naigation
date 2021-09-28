@@ -4,3 +4,4 @@ SELECT_CATEGORY=Kategorie wählen
 CHOOSE_TEMPLATE=Bitte das Template auswählen ansonsten wird das Standard Tmplate gewählt.
 TEMPLATE=Template wählen:
 SHOW_SUBNAV=Subnavigation anzeigen
+STATIC_SUBNAV=Statische Subnavigation (werden immer angezeigt)

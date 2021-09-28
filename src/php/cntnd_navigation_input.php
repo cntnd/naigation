@@ -21,13 +21,6 @@ if (!Cntnd\Navigation\CntndNavigation::isTemplate('cntnd_navigation', $client, $
 $uuid = rand();
 $templates = Cntnd\Navigation\CntndNavigation::templates('cntnd_navigation', $client);
 
-$db=cRegistry::getDb();
-$sql = "SELECT DISTINCT dirname from ".$cfg["tab"]["upl"];
-$db->query($sql);
-while ( $db->nextRecord() ) {
-    $dirs[] = $db->f("dirname");
-}
-
 if (!$template OR empty($template) OR $template=="false"){
     echo '<div class="cntnd_info cntnd_info-primary">'.mi18n("CHOOSE_TEMPLATE").'</div>';
 }
@@ -53,8 +46,12 @@ if (!$template OR empty($template) OR $template=="false"){
         <select name="CMS_VAR[2]" id="template_<?= $uuid ?>" size="1">
             <option value="false"><?= mi18n("SELECT_CHOOSE") ?></option>
             <?php
-            foreach ($templates as $value) {
-                echo $value;
+            foreach ($templates as $template_file) {
+                $selected="";
+                if ($template==$template_file){
+                    $selected = 'selected="selected"';
+                }
+                echo '<option value="'.$template_file.'" '.$selected.'>'.$template_file.'</option>';
             }
             ?>
         </select>
