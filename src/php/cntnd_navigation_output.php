@@ -47,19 +47,21 @@ if (!function_exists("navigation")){
         $nav=array();
         $subcats=array();
         foreach ($tree as $wrapper) {
-            if (is_array($wrapper['subcats'])){
-                $subcats = navigation($wrapper['subcats']);
-            }
+            if ($wrapper['item']->get('startidartlang')!="0") {
+                if (is_array($wrapper['subcats'])) {
+                    $subcats = navigation($wrapper['subcats']);
+                }
 
-            $nav[$wrapper['item']->get('startidartlang')]=array(
-                "idcat"=>$wrapper['idcat'],
-                "redirect"=>false,
-                "idartlang"=>$wrapper['item']->get('startidartlang'),
-                "url"=>$wrapper['item']->getLink(),
-                "target"=>"_self",
-                "name"=>$wrapper['item']->get('name'),
-                "subcats"=>$subcats
-            );
+                $nav[$wrapper['item']->get('startidartlang')] = array(
+                    "idcat" => $wrapper['idcat'],
+                    "redirect" => false,
+                    "idartlang" => $wrapper['item']->get('startidartlang'),
+                    "url" => $wrapper['item']->getLink(),
+                    "target" => "_self",
+                    "name" => $wrapper['item']->get('name'),
+                    "subcats" => $subcats
+                );
+            }
         }
         return $nav;
     }
