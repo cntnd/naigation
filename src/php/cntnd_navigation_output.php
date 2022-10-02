@@ -1,5 +1,6 @@
 <?php
 // cntnd_navigation_output
+$cntnd_module = "cntnd_navigation";
 
 // includes
 cInclude('module', 'includes/class.cntnd_navigation.php');
@@ -17,7 +18,7 @@ if (empty($category_id)){
 }
 
 $template = "CMS_VALUE[2]";
-if (!Cntnd\Navigation\CntndNavigation::isTemplate('cntnd_navigation', $client, $template)){
+if (!Cntnd\Navigation\CntndNavigation::isTemplate($cntnd_module, $client, $template)){
     $template="default.html";
 }
 
@@ -28,11 +29,10 @@ if (empty($subnav_depth)){
 }
 $static_subnav = "CMS_VALUE[5]";
 
-// module
-if ($editmode){
-    echo '<div class="content_box"><label class="content_type_label">'.mi18n("MODULE").'</label>';
-}
+// other vars
+$uuid = rand();
 
+// module
 // get client settings
 $rootIdcat = getEffectiveSetting('navigation_main', 'idcat', $category_id);
 $depth = getEffectiveSetting('navigation_main', 'depth', $subnav_depth);
@@ -98,8 +98,4 @@ $smarty->assign('navigation', $navigation);
 $smarty->assign('subnav', $subnav);
 $smarty->assign('staticSubnav', $static_subnav);
 $smarty->display($template);
-
-if ($editmode){
-    echo '</div>';
-}
 ?>
