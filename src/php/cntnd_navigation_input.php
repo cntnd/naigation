@@ -5,7 +5,7 @@ $cntnd_module = "cntnd_navigation";
 // includes
 cInclude('module', 'includes/style.cntnd_navigation_input.php');
 cInclude('module', 'includes/class.cntnd_navigation.php');
-echo '<script src="https://cdn.jsdelivr.net/gh/cntnd/core_style@1.1.0/dist/core_script.min.js"></script>';
+echo '<script src="https://cdn.jsdelivr.net/gh/cntnd/core_style@1.1.1/dist/core_script.min.js"></script>';
 
 
 // input/vars
@@ -54,16 +54,8 @@ if (!$template OR empty($template) OR $template=="false"){
         </div>
 
         <div class="form-check form-check-inline">
-            <input id="static_subnav_<?= $uuid ?>" class="form-check-inputcheck-dependent" data-check-dependent="subnav_<?= $uuid ?>" type="checkbox" name="CMS_VAR[5]" value="true" <?php if("CMS_VALUE[5]"=='true'){ echo 'checked'; } ?> />
+            <input id="static_subnav_<?= $uuid ?>" class="form-check-input check-dependent" data-check-dependent="subnav_<?= $uuid ?>" type="checkbox" name="CMS_VAR[5]" value="true" <?php if("CMS_VALUE[5]"=='true'){ echo 'checked'; } ?> />
             <label for="static_subnav_<?= $uuid ?>"><?= mi18n("STATIC_SUBNAV") ?></label>
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <legend><?= mi18n("SITEMAP") ?></legend>
-        <div class="form-check form-check-inline">
-            <input id="sitemap_<?= $uuid ?>" class="form-check-input disable-dependent" data-disable-dependent="subnav_<?= $uuid ?>;static_subnav_<?= $uuid ?>" type="checkbox" name="CMS_VAR[4]" value="true" <?php if("CMS_VALUE[4]"=='true'){ echo 'checked'; } ?> />
-            <label for="sitemap_<?= $uuid ?>"><?= mi18n("SHOW_SITEMAP") ?></label>
         </div>
     </fieldset>
 </div>
