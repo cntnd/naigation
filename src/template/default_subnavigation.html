@@ -1,16 +1,18 @@
 {if 0 lt $ulId|strlen}<!-- cntnd_navigation/template/default_subnavigation.html -->{/if}
-<ul class="subnavigation">
-  {foreach name=nav from=$navigation item=wrapper}
-  {assign var="idcat" value=$wrapper.idcat}
-  {assign var="idartlang" value=$wrapper.idartlang}
-  {assign var="active" value=''}
+  {if 0 lt $navigation|count}
+    <ul class="subnavigation">
+      {foreach name=nav from=$navigation item=wrapper}
+      {assign var="idcat" value=$wrapper.idcat}
+      {assign var="idartlang" value=$wrapper.idartlang}
+      {assign var="active" value=''}
 
-  {if $idcat == $current}
-  {assign var="active" value='active'}
+      {if $idcat == $current}
+      {assign var="active" value='active'}
+      {/if}
+      <li class="subnav-item">
+        <a class="subnav-link {$active}" href="{$wrapper.url}" target="{$wrapper.target}" title="{$wrapper.name}">{$wrapper.name}</a>
+      </li>
+      {/foreach}
+    </ul>
   {/if}
-  <li class="subnav-item">
-    <a class="subnav-link {$active}" href="{$wrapper.url}" target="{$wrapper.target}" title="{$wrapper.name}">{$wrapper.name}</a>
-  </li>
-  {/foreach}
-</ul>
 {if 0 lt $ulId|strlen}<!-- cntnd_navigation/template/default_subnavigation.html -->{/if}
